@@ -1,0 +1,32 @@
+const router = require('express').Router();
+const Task = require('../models/tasks')
+
+router.get('/', async (req, res, next) => {
+    const tasks = await Task.find();
+    return res.json(tasks);
+})
+
+router.post('/', async (req, res, next) => {
+    const data = await new Task(req.body).save();
+    return res.json(data);
+})
+
+router.put('/', async (req, res, next) => {
+    // console.log(req.body);
+    const options = { new: true };
+    const data = await Task.findByIdAndUpdate(req.body._id, req.body, options);
+    return res.json(data);
+})
+
+router.delete('/:id', async (req, res, next) => {
+    const data = await Task.findByIdAndDelete(req.params.id);
+    return res.json(data);
+})
+
+router.get('/dashboard', async (req, res, next) => {
+    const todo = await Task.find({ active: true });
+    const done = await Task.find({ active: false });
+    return res.json({ todo: todo.length, done: done.length });
+})
+
+module.exports = router;
