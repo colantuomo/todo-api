@@ -22,7 +22,7 @@ mongoose.connect(env.config.MONGODB_URI, {
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     app.use(routes)
 
-    app.get('/', () => {
+    app.get('/', (req, res, next) => {
         res.send('[TODO - API - Online]');
     })
 
