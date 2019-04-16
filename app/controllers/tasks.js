@@ -26,7 +26,13 @@ router.delete('/:id', async (req, res, next) => {
 router.get('/dashboard', async (req, res, next) => {
     const todo = await Task.find({ active: true });
     const done = await Task.find({ active: false });
-    return res.json({ todo: todo.length, done: done.length });
+    const all = await Task.find();
+    return res.json({ todo: todo.length, done: done.length, all: all.length });
+})
+
+router.get('/:type', async (req, res, next) => {
+    const tasks = await Task.find({ active: req.params.type }).sort({ date: 1 });
+    return res.json(tasks);
 })
 
 module.exports = router;
