@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Task = require('../models/tasks')
 
 router.get('/', async (req, res, next) => {
-    const tasks = await Task.find().sort({ active: -1, date: 1 });
+    const tasks = await Task.find().sort({ active: -1, date: -1 });
     return res.json(tasks);
 })
 
@@ -31,7 +31,7 @@ router.get('/dashboard', async (req, res, next) => {
 })
 
 router.get('/:type', async (req, res, next) => {
-    const tasks = await Task.find({ active: req.params.type }).sort({ date: 1 });
+    const tasks = await Task.find({ active: req.params.type }).sort({ date: -1 });
     return res.json(tasks);
 })
 

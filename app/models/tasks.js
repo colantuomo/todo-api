@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const TaskSchema = new mongoose.Schema({
     user: String,
     description: String,
-    date: String,
+    date: Date,
     active: Boolean
 })
 
