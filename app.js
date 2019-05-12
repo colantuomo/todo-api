@@ -1,13 +1,12 @@
 const express = require('express');
 mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const env = require('./environment/environment');
 const dotenv = require('dotenv').config();
 const routes = require('./app/routes');
 const app = express();
 
 
-mongoose.connect(env.config.MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true
 }).then(data => {
     console.log('connected to DB');

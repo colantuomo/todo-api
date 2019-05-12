@@ -1,5 +1,8 @@
 const router = require('express').Router();
-const Task = require('../models/tasks')
+const Task = require('../models/taskModel');
+const auth = require('../middlewares/auth');
+
+router.use(auth.checkToken)
 
 router.get('/', async (req, res, next) => {
     const tasks = await Task.find().sort({ active: -1, date: -1 });
@@ -12,7 +15,6 @@ router.post('/', async (req, res, next) => {
 })
 
 router.put('/', async (req, res, next) => {
-    // console.log(req.body);
     const options = { new: true };
     const data = await Task.findByIdAndUpdate(req.body._id, req.body, options);
     return res.json(data);
