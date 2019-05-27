@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const TaskSchema = new mongoose.Schema({
+    userId: String,
     user: String,
     description: String,
     date: Date,

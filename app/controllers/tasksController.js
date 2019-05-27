@@ -3,18 +3,20 @@ const Task = require('../models/taskModel');
 const auth = require('../middlewares/auth');
 
 router.get('/', auth.checkToken, async (req, res, next) => {
-    const tasks = await Task.find().sort({ active: -1, date: -1 });
+    const tasks = await Task.find({ userId: req.user_id }).sort({ active: -1, date: -1 });
     return res.json(tasks);
 })
 
 router.post('/', auth.checkToken, async (req, res, next) => {
+    req.body['userId'] = req.user_id;
+    req.body['user'] = req.username;
     const data = await new Task(req.body).save();
     return res.json(data);
 })
 
 router.put('/', auth.checkToken, async (req, res, next) => {
     const options = { new: true };
-    const data = await Task.findByIdAndUpdate(req.body._id, req.body, options);
+    const data = await Task.findByIdAndUpdate({ _id: req.body._id, userId: req.user_id }, req.body, options);
     return res.json(data);
 })
 
@@ -24,14 +26,14 @@ router.delete('/:id', auth.checkToken, async (req, res, next) => {
 })
 
 router.get('/dashboard', auth.checkToken, async (req, res, next) => {
-    const todo = await Task.find({ active: true });
-    const done = await Task.find({ active: false });
-    const all = await Task.find();
+    const todo = await Task.find({ active: true, userId: req.user_id });
+    const done = await Task.find({ active: false, userId: req.user_id });
+    const all = await Task.find({ userId: req.user_id });
     return res.json({ todo: todo.length, done: done.length, all: all.length });
 })
 
 router.get('/:type', auth.checkToken, async (req, res, next) => {
-    const tasks = await Task.find({ active: req.params.type }).sort({ date: -1 });
+    const tasks = await Task.find({ active: req.params.type, userId: req.user_id }).sort({ date: -1 });
     return res.json(tasks);
 })
 
