@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const routes = require('./app/routes');
 const app = express();
-
+const port = process.env.PORT || 3333;
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true
@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGODB_URI, {
         res.send('[TODO - API - Online]');
     })
 
-    app.listen(process.env.PORT || 3333, () => {
-        console.log('App listening in port ', process.env.PORT);
+    app.listen(port, () => {
+        console.log('App listening in port ', port);
     })
 });
