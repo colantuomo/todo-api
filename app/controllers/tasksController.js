@@ -39,4 +39,10 @@ router.get('/:type', auth.checkToken, async (req, res, next) => {
     return res.json(tasks);
 })
 
+router.post('/search', auth.checkToken, async (req, res, next) => {
+    const { param, categoryId } = req.body;
+    const tasks = await Task.find({ description: { $regex: '.*' + param + '.*', $options: 'i' }, categoryId, userId: req.user_id }).sort({ date: -1 });
+    return res.json(tasks);
+})
+
 module.exports = router;
