@@ -25,4 +25,4 @@ workflows:
       - setup
       - test:
           requires:
-            - build
+            - setup
