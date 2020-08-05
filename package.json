@@ -7,7 +7,7 @@
     "start": "node app.js",
     "start:dev": "nodemon app.js",
     "heroku:logs": "npx heroku logs --tail --app naruto-fake-api",
-    "test": "npx jest --passWithNoTests"
+    "test": "jest --passWithNoTests"
   },
   "keywords": [
     "google-vision"
