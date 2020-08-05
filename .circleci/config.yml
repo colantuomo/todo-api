@@ -1,25 +1,28 @@
 version: 2.1
+
+default_setup: &default_setup
+  docker:
+    - image: circleci/node:12.18.0
+  working_directory: "~/todo-api"
+
 jobs:
-  build:
-    docker:
-      - image: circleci/node:12.18.0 # the primary container, where your job's commands are run
-    working_directory: "~/todo-api"
+  setup:
+    <<: *default_setup
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
-  test:
-    docker:
-      - image: circleci/node:12.18.0 # the primary container, where your job's commands are run
-    working_directory: "~/todo-api"
-    steps:
-      - checkout # check out the code in the project directory
+      - checkout
       - run: npm install
-      - run: npm run test
+  test:
+    <<: *default_setup
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: npm run test
 workflows:
   version: 2
-  build_and_test:
+  setup_and_test:
     jobs:
-      - build
+      - setup
       - test:
           requires:
             - build
